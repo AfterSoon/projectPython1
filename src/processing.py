@@ -18,5 +18,5 @@ def sort_by_date(initial_list: list[dict[str, Any]], reverse_list: bool = True) 
     sorted_list = sorted(initial_list, key=lambda d: d['date'], reverse=reverse_list)
     return (sorted_list)
 
-#print(filter_by_state(initial_list))
-#print(sort_by_date(initial_list))
+# print(filter_by_state(initial_list))
+# print(sort_by_date(initial_list))
