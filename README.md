@@ -10,6 +10,22 @@ git clone https://github.com/AfterSoon/projectPython1
 ```
 pip install -r requirements.txt
 ```
+## Тестирование
+Все функции покрыты тестами.
+Ниже отчет по тестированию:
+Name                       Stmts   Miss  Cover
+----------------------------------------------
+src\__init__.py                0      0   100%
+src\masks.py                  10      2    80%
+src\processing.py             10      0   100%
+src\widget.py                 15      4    73%
+tests\__init__.py              0      0   100%
+tests\test_processing.py      10      0   100%
+tests\test_widget.py          10      1    90%
+----------------------------------------------
+TOTAL                         65      7    89%
+
+
 ## Использование
 В файлы test_code.py и processing.py я в докстрингах указал примеры работы функций, раздокументируйте их и запустите, чтобы самим 
 увидеть, как работают функции.
@@ -17,3 +33,5 @@ pip install -r requirements.txt
 ## Документация:
 
 Для получения дополнительной информации обратитесь к [документации](docs/README.md).
+
+
