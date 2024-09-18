@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from src.decorators import log
@@ -15,7 +17,7 @@ def my_function_error(x: str, y: int) -> int:
     return x + y
 
 
-def test_my_function_file(tmp_path: pytest.TempPath) -> None:
+def test_my_function_file(tmp_path: str | Path) -> None:
     log_file = tmp_path / "testlog.txt"
 
     @log(filename=log_file)
