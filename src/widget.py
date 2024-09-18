@@ -1,26 +1,31 @@
-def mask_account_card(info: str) -> str:
-    """Функция работы с номером карты и номером счета, сначала разделяем их, далее маскируем в блоке if"""
-    # Разделяем строку на тип и номер
-    parts = info.split()
-    card_type = ' '.join(parts[:-1])  # Все, кроме последнего элемента
-    number = parts[-1]  # Последний элемент - это номер
+import re
 
-    if card_type.lower() in ['visa', 'mastercard', 'maestro']:
-        # Маскировка номера карты: оставляем первые 4 и последние 4 цифры
-        masked_number = f"{number[:4]} {number[4:6]}** **** {number[-4:]}"
-        return f"{card_type} {masked_number}"
-    elif card_type.lower() == 'счет':
-        # Маскировка номера счета: оставляем последние 4 цифры
-        masked_number = f"**{number[-4:]}"
-        return f"{card_type} {masked_number}"
-    else:
-        raise ValueError("Неизвестный тип карты или счета.")
+from src.masks import mask_account_number, mask_card_number
+
+
+def mask_account_card(data: str) -> str:
+    """
+    Функция маскирует данные карты и счета из строк
+
+    """
+
+    numbers = re.findall(r"\b\d+\b", data)
+    for number in numbers:
+        if len(number) == 16:
+            mask_number = mask_card_number(number)
+        elif len(number) == 20:
+            mask_number = mask_account_number(number)
+        else:
+            mask_number = "Error"
+        data = re.sub(number, mask_number, data, count=1)
+    return data
 
 
 def get_date(date_str: str) -> str:
-    """Функция принимает строку с полной датой и выдает более упрощенную в виде день-месяц-год"""
-    # Разбиваем строку по символу 'T' и берем только первую часть
-    date_part = date_str.split('T')[0]
-    year, month, day = date_part.split('-')
-    # Форматируем дату в нужный формат
+    """
+    Приводит строку с датой к нужному формату
+
+    """
+    date_part = date_str.split("T")[0]
+    year, month, day = date_part.split("-")
     return f"{day}.{month}.{year}"
