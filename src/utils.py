@@ -15,9 +15,10 @@ logging.basicConfig(
     format="%(asctime)s: %(filename)s: %(levelname)s: %(message)s",
     filename="../logs/utils.log",
     filemode="w",
-                    )
+)
 
 logger = logging.getLogger("utils")
+
 
 def get_transactions_dictionary(path: str) -> Any:
     """Принимает путь до JSON-файла и возвращает список словарей с данными о финансовых транзакциях"""
@@ -52,7 +53,7 @@ def transaction_amount_in_rub(transactions: list, transaction_id: int) -> Any:
                 transaction_convert["amount"] = transaction["operationAmount"]["amount"]
                 transaction_convert["currency"] = transaction["operationAmount"]["currency"]["code"]
                 logger.info(f"Operation amount in {transaction_convert["currency"]}:{transaction_convert["amount"]}")
-#                print(transaction_convert)
+                #                print(transaction_convert)
                 rub_amount = round(convert_to_rub(transaction_convert), 2)
                 if rub_amount != 0:
                     logger.info(f"Operation amount in RUB:{rub_amount}")
@@ -88,6 +89,39 @@ def convert_to_rub(transaction_convert: dict) -> Any:
         return 0
 
 
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 #    transactions = get_transactions_dictionary("../data/operations.json")
 #    print(transaction_amount_in_rub(transactions, 41428829))
+
+from json import JSONDecodeError
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(name)s - %(levelname)s: %(message)s",
+    filename="logs/utils.log",
+    filemode="w",
+)
+utils_logger = logging.getLogger("utils")
+
+
+def reading_json(path_to_file: str) -> list:
+    """Функция читает json файл с транзакциями и выдает их список"""
+    utils_logger.info("Запуск программы")
+    try:
+        with open(path_to_file, encoding="UTF-8") as file:
+            j_file = json.load(file)
+            result = isinstance(j_file, list)
+            if result and j_file != []:
+                utils_logger.info("Данные успешно получены")
+                return j_file
+            else:
+                utils_logger.warning("Ошибка данных")
+                return []
+    except FileNotFoundError:
+        utils_logger.error("Файл не найден")
+        print("Файл не найден")
+        return []
+    except JSONDecodeError:
+        utils_logger.error("Пустой файл")
+        print("Некорректные данные")
+        return []
